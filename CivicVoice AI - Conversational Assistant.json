@@ -1,0 +1,673 @@
+{
+  "name": "CivicVoice AI - Conversational Assistant",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "",
+        "options": {
+          "subtitle": "Start a chat. We're here to help you 24/7.",
+          "title": "civicVoice.ai",
+          "responseMode": "lastNode"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "38840923-302a-41b7-86d4-676c97cdb463",
+      "name": "When chat message received",
+      "webhookId": "c3a0d44b-8f18-49dc-b4cf-054491257fb2"
+    },
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "STRICT OUTPUT FORMAT:\n\nReturn exactly one JSON object.\n\nThe JSON must contain these six fields:\n\n1. issue_type\n2. description\n3. location\n4. priority\n5. department\n6. complaint_summary\n\nAll six values must be strings.\n\nDo not remove any field.\nDo not rename any field.\nDo not return additional fields.\nDo not use Markdown formatting.\nDo not include explanations outside JSON.\n\nExample:\n\n{\n  \"issue_type\": \"Pothole\",\n  \"description\": \"Large pothole near PES College\",\n  \"location\": \"PES College, Bengaluru\",\n  \"priority\": \"High\",\n  \"department\": \"Municipal/PWD\",\n  \"complaint_summary\": \"Large pothole creating a road safety hazard\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "0babb3ef-2bc6-40c6-a2ab-18732c711884",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"issue_type\": \"Pothole\",\n  \"description\": \"Large pothole near a college\",\n  \"location\": \"Bengaluru\",\n  \"priority\": \"High\",\n  \"department\": \"Municipal/PWD\",\n  \"complaint_summary\": \"Large pothole creating a potential safety hazard near a college in Bengaluru.\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        352,
+        240
+      ],
+      "id": "ba72350f-7ef3-49be-ada9-33b19abef19f",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1Wute0NVU1TfitKQXyBpH0sspCLDnwxC2t1Ovsa78KpY",
+          "mode": "list",
+          "cachedResultName": "CivicVoice AI",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Wute0NVU1TfitKQXyBpH0sspCLDnwxC2t1Ovsa78KpY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Complaints",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Wute0NVU1TfitKQXyBpH0sspCLDnwxC2t1Ovsa78KpY/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "issue_type": "={{ $json.issue_type }}",
+            "description": "=\t{{ $json.description }}",
+            "location": "=\t{{ $json.location }}",
+            "priority": "=\t{{ $json.priority }}",
+            "department": "=\t{{ $json.department }}",
+            "complaint_summary": "=\t{{ $json.complaint_summary }}",
+            "complaint_id": "={{ $json.complaint_id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "complaint_id",
+              "displayName": "complaint_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "issue_type",
+              "displayName": "issue_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "location",
+              "displayName": "location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "priority",
+              "displayName": "priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "department",
+              "displayName": "department",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "complaint_summary",
+              "displayName": "complaint_summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "government_status",
+              "displayName": "government_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "government_reference_id",
+              "displayName": "government_reference_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "submitted_at",
+              "displayName": "submitted_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "last_checked_at",
+              "displayName": "last_checked_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        800,
+        0
+      ],
+      "id": "67d166bb-9bc4-4b04-b1b3-7f1a077e1ff5",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "WhOZHZqEF1mITXdT",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        208,
+        208
+      ],
+      "id": "35c79b53-3d81-437e-b91c-481fcd1b8d7d",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://httpbin.org/post",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "issue_type",
+              "value": "={{ $json.issue_type }}"
+            },
+            {
+              "name": "description",
+              "value": "={{ $json.description }}"
+            },
+            {
+              "name": "location",
+              "value": "={{ $json.location }}"
+            },
+            {
+              "name": "priority",
+              "value": "={{ $json.priority }}"
+            },
+            {
+              "name": "department",
+              "value": "={{ $json.department }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1024,
+        32
+      ],
+      "id": "194abbd6-e18c-4e04-a7f5-ca239a0f6848",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e0284da6-b39c-4cfe-9796-9dd3a6c6a69d",
+              "name": "complaint_id",
+              "value": "={{ 'CV-' + $now.toFormat('yyyyMMdd-HHmmss') }}",
+              "type": "string"
+            },
+            {
+              "id": "e1b18973-dbf0-49c5-95ff-3b4ee70c04de",
+              "name": "issue_type",
+              "value": "={{ $json.output.issue_type }}",
+              "type": "string"
+            },
+            {
+              "id": "87a9119f-1f2a-4133-9349-df91372278d3",
+              "name": "description",
+              "value": "={{ $json.output.description }}",
+              "type": "string"
+            },
+            {
+              "id": "fd5a037c-dadb-4fa7-ac04-580e01981a2a",
+              "name": "location",
+              "value": "={{ $json.output.location }}",
+              "type": "string"
+            },
+            {
+              "id": "93e9ad0e-dd07-4cfb-a870-1a37296153e8",
+              "name": "priority",
+              "value": "={{ $json.output.priority }}",
+              "type": "string"
+            },
+            {
+              "id": "1c59079b-97d3-41fc-a054-d5506f5cfde7",
+              "name": "department",
+              "value": "={{ $json.output.department }}",
+              "type": "string"
+            },
+            {
+              "id": "c1f13bd2-9af3-41dc-b853-e7f94ec8dfbf",
+              "name": "complaint_summary",
+              "value": "={{ $json.output.complaint_summary }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        576,
+        -16
+      ],
+      "id": "67d67140-4059-4700-8e7e-4ade915c38ae",
+      "name": "Prepare Complaint"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9bf42f41-93a9-434c-8142-627d4762cb54",
+              "name": "complaint_id",
+              "value": "={{ $('Prepare Complaint').item.json.complaint_id }}",
+              "type": "string"
+            },
+            {
+              "id": "ae6ac672-94b1-41c6-ba61-292a52aefc88",
+              "name": "government_status",
+              "value": "SUBMITTED",
+              "type": "string"
+            },
+            {
+              "id": "ce97209c-603b-49e4-8f55-e4d5be48855c",
+              "name": "government_reference_id",
+              "value": "={{ 'CV-GOV-' + $('Prepare Complaint').item.json.complaint_id }}",
+              "type": "string"
+            },
+            {
+              "id": "1c54af3d-d687-4e3e-9745-6712b3614637",
+              "name": "submitted_at",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "c634939a-32cf-4254-8fd1-a74beccde13f",
+              "name": "last_checked_at",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1248,
+        32
+      ],
+      "id": "ada0db9a-c848-4b7c-8f48-6adfb56aa5ea",
+      "name": "Prepare Government Update"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1Wute0NVU1TfitKQXyBpH0sspCLDnwxC2t1Ovsa78KpY",
+          "mode": "list",
+          "cachedResultName": "CivicVoice AI",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Wute0NVU1TfitKQXyBpH0sspCLDnwxC2t1Ovsa78KpY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Complaints",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Wute0NVU1TfitKQXyBpH0sspCLDnwxC2t1Ovsa78KpY/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "government_status": "={{ $json.government_status }}",
+            "government_reference_id": "={{ $json.government_reference_id }}",
+            "submitted_at": "={{ $json.submitted_at }}",
+            "last_checked_at": "={{ $json.last_checked_at }}",
+            "complaint_id": "={{ $json.complaint_id }}"
+          },
+          "matchingColumns": [
+            "complaint_id"
+          ],
+          "schema": [
+            {
+              "id": "complaint_id",
+              "displayName": "complaint_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "issue_type",
+              "displayName": "issue_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "location",
+              "displayName": "location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "priority",
+              "displayName": "priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "department",
+              "displayName": "department",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "complaint_summary",
+              "displayName": "complaint_summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "government_status",
+              "displayName": "government_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "government_reference_id",
+              "displayName": "government_reference_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "submitted_at",
+              "displayName": "submitted_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "last_checked_at",
+              "displayName": "last_checked_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1472,
+        32
+      ],
+      "id": "90ce9fe0-c7fd-41c1-a2c3-a3f0c0137b25",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "WhOZHZqEF1mITXdT",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        80,
+        208
+      ],
+      "id": "2cad5be5-0c83-4b69-a346-66f256cc8b09",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "2dauslIuY9O5c66Y",
+          "name": "Google Gemini(PaLM) Api account 5"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Prepare Complaint",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Prepare Government Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Complaint": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Government Update": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        []
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "477137c9-a732-4461-983a-11fd577147a1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "784617539a075bed0d047e5c406b52841210c84cfc0fefb1c6179dbd2e900bf8"
+  },
+  "nodeGroups": [],
+  "id": "VH9DwrTleUHBSv3f",
+  "tags": []
+}
